@@ -49,6 +49,7 @@
 		F5BF1B522988D090002119A2 /* Swift BelayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift BelayUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BF1B562988D090002119A2 /* Swift_BelayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_BelayUITests.swift; sourceTree = "<group>"; };
 		F5BF1B582988D090002119A2 /* Swift_BelayUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_BelayUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F5BF1B652988D461002119A2 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +80,7 @@
 		F5BF1B292988D08E002119A2 = {
 			isa = PBXGroup;
 			children = (
+				F5BF1B652988D461002119A2 /* ReadMe.md */,
 				F5BF1B342988D08E002119A2 /* Swift Belay */,
 				F5BF1B4B2988D090002119A2 /* Swift BelayTests */,
 				F5BF1B552988D090002119A2 /* Swift BelayUITests */,
