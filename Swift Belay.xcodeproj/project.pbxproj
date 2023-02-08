@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4401E6F42991BFB500ECC7F0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401E6F32991BFB500ECC7F0 /* User.swift */; };
+		4401E6F62991C14D00ECC7F0 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401E6F52991C14D00ECC7F0 /* SettingsPageView.swift */; };
+		4401E6FA2991C93500ECC7F0 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4401E6F92991C93500ECC7F0 /* AccountDetailView.swift */; };
 		F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B352988D08E002119A2 /* AppDelegate.swift */; };
 		F5BF1B382988D08E002119A2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B372988D08E002119A2 /* SceneDelegate.swift */; };
 		F5BF1B3A2988D08E002119A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B392988D08E002119A2 /* ViewController.swift */; };
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4401E6F32991BFB500ECC7F0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4401E6F52991C14D00ECC7F0 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
+		4401E6F92991C93500ECC7F0 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		F5BF1B322988D08E002119A2 /* Swift Belay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift Belay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BF1B352988D08E002119A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5BF1B372988D08E002119A2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +83,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4401E6F12991BF7A00ECC7F0 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4401E6F52991C14D00ECC7F0 /* SettingsPageView.swift */,
+				4401E6F92991C93500ECC7F0 /* AccountDetailView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		4401E6F22991BF9B00ECC7F0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4401E6F32991BFB500ECC7F0 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		F5BF1B292988D08E002119A2 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +124,8 @@
 		F5BF1B342988D08E002119A2 /* Swift Belay */ = {
 			isa = PBXGroup;
 			children = (
+				4401E6F22991BF9B00ECC7F0 /* Models */,
+				4401E6F12991BF7A00ECC7F0 /* Settings */,
 				F5BF1B352988D08E002119A2 /* AppDelegate.swift */,
 				F5BF1B372988D08E002119A2 /* SceneDelegate.swift */,
 				F5BF1B392988D08E002119A2 /* ViewController.swift */,
@@ -260,9 +285,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4401E6F42991BFB500ECC7F0 /* User.swift in Sources */,
 				F5BF1B3A2988D08E002119A2 /* ViewController.swift in Sources */,
 				F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */,
+				4401E6FA2991C93500ECC7F0 /* AccountDetailView.swift in Sources */,
 				F5BF1B382988D08E002119A2 /* SceneDelegate.swift in Sources */,
+				4401E6F62991C14D00ECC7F0 /* SettingsPageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

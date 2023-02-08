@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct AccountDetailView: View {
+    let user: User
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Text(user.firstName)
+            Text(user.lastName)
+        }
     }
 }
 
 struct AccountDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountDetailView()
+        AccountDetailView(user: User.testUser)
     }
 }
