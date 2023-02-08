@@ -10,6 +10,8 @@
 		F56A9A3D298DBBBC009C98FF /* SBHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A3C298DBBBC009C98FF /* SBHomeViewController.swift */; };
 		F56A9A3F298DBBD2009C98FF /* SBChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A3E298DBBD2009C98FF /* SBChatViewController.swift */; };
 		F56A9A41298DBBD9009C98FF /* SBProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A40298DBBD9009C98FF /* SBProfileViewController.swift */; };
+		F56A9A4A29922D94009C98FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A4929922D94009C98FF /* Constants.swift */; };
+		F56A9A4C299239C7009C98FF /* SBLoginSignUpNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A4B299239C7009C98FF /* SBLoginSignUpNavController.swift */; };
 		F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B352988D08E002119A2 /* AppDelegate.swift */; };
 		F5BF1B382988D08E002119A2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B372988D08E002119A2 /* SceneDelegate.swift */; };
 		F5BF1B3A2988D08E002119A2 /* SBTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B392988D08E002119A2 /* SBTabBarController.swift */; };
@@ -41,6 +43,8 @@
 		F56A9A3C298DBBBC009C98FF /* SBHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBHomeViewController.swift; sourceTree = "<group>"; };
 		F56A9A3E298DBBD2009C98FF /* SBChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBChatViewController.swift; sourceTree = "<group>"; };
 		F56A9A40298DBBD9009C98FF /* SBProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBProfileViewController.swift; sourceTree = "<group>"; };
+		F56A9A4929922D94009C98FF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F56A9A4B299239C7009C98FF /* SBLoginSignUpNavController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBLoginSignUpNavController.swift; sourceTree = "<group>"; };
 		F5BF1B322988D08E002119A2 /* Swift Belay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift Belay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BF1B352988D08E002119A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5BF1B372988D08E002119A2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,10 +88,12 @@
 		F56A9A36298DBA6E009C98FF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F56A9A4929922D94009C98FF /* Constants.swift */,
 				F5BF1B392988D08E002119A2 /* SBTabBarController.swift */,
 				F56A9A3C298DBBBC009C98FF /* SBHomeViewController.swift */,
 				F56A9A3E298DBBD2009C98FF /* SBChatViewController.swift */,
 				F56A9A40298DBBD9009C98FF /* SBProfileViewController.swift */,
+				F56A9A4B299239C7009C98FF /* SBLoginSignUpNavController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -317,6 +323,8 @@
 				F56A9A41298DBBD9009C98FF /* SBProfileViewController.swift in Sources */,
 				F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */,
 				F56A9A3D298DBBBC009C98FF /* SBHomeViewController.swift in Sources */,
+				F56A9A4A29922D94009C98FF /* Constants.swift in Sources */,
+				F56A9A4C299239C7009C98FF /* SBLoginSignUpNavController.swift in Sources */,
 				F5BF1B382988D08E002119A2 /* SceneDelegate.swift in Sources */,
 				F56A9A3F298DBBD2009C98FF /* SBChatViewController.swift in Sources */,
 			);
