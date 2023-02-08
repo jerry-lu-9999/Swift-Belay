@@ -8,11 +8,11 @@
 import UIKit
 
 /// Controller for the root tab controller and chat, profile controller
-class SBTabBarController: UITabBarController {
+class SBTabBarController: UITabBarController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
+        view.backgroundColor = Constants.themeColor
         setUpThreeTabs()
     }
     
