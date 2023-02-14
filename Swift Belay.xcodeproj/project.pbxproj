@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		F502ABB6299B3DCF0050826C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = F502ABB5299B3DCF0050826C /* FacebookLogin */; };
+		F502ABBA299B4B200050826C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = F502ABB9299B4B200050826C /* GoogleSignIn */; };
+		F502ABBD299B58970050826C /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = F502ABBC299B58970050826C /* AWSCognitoAuthPlugin */; };
+		F502ABBF299B58970050826C /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = F502ABBE299B58970050826C /* Amplify */; };
 		F56A9A3D298DBBBC009C98FF /* SBHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A3C298DBBBC009C98FF /* SBHomeViewController.swift */; };
 		F56A9A3F298DBBD2009C98FF /* SBChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A3E298DBBD2009C98FF /* SBChatViewController.swift */; };
 		F56A9A41298DBBD9009C98FF /* SBProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56A9A40298DBBD9009C98FF /* SBProfileViewController.swift */; };
@@ -68,6 +71,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F502ABB6299B3DCF0050826C /* FacebookLogin in Frameworks */,
+				F502ABBF299B58970050826C /* Amplify in Frameworks */,
+				F502ABBA299B4B200050826C /* GoogleSignIn in Frameworks */,
+				F502ABBD299B58970050826C /* AWSCognitoAuthPlugin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +217,9 @@
 			name = "Swift Belay";
 			packageProductDependencies = (
 				F502ABB5299B3DCF0050826C /* FacebookLogin */,
+				F502ABB9299B4B200050826C /* GoogleSignIn */,
+				F502ABBC299B58970050826C /* AWSCognitoAuthPlugin */,
+				F502ABBE299B58970050826C /* Amplify */,
 			);
 			productName = "Swift Belay";
 			productReference = F5BF1B322988D08E002119A2 /* Swift Belay.app */;
@@ -286,6 +295,8 @@
 			mainGroup = F5BF1B292988D08E002119A2;
 			packageReferences = (
 				F502ABB4299B3DCF0050826C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				F502ABB8299B4B200050826C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				F502ABBB299B58970050826C /* XCRemoteSwiftPackageReference "amplify-swift" */,
 			);
 			productRefGroup = F5BF1B332988D08E002119A2 /* Products */;
 			projectDirPath = "";
@@ -674,6 +685,22 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		F502ABB8299B4B200050826C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		F502ABBB299B58970050826C /* XCRemoteSwiftPackageReference "amplify-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -681,6 +708,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F502ABB4299B3DCF0050826C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		F502ABB9299B4B200050826C /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F502ABB8299B4B200050826C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		F502ABBC299B58970050826C /* AWSCognitoAuthPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F502ABBB299B58970050826C /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = AWSCognitoAuthPlugin;
+		};
+		F502ABBE299B58970050826C /* Amplify */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F502ABBB299B58970050826C /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = Amplify;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

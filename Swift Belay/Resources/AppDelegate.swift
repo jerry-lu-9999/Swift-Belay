@@ -7,6 +7,7 @@
 
 import UIKit
 import FacebookCore
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,12 +29,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             open url: URL,
             options: [UIApplication.OpenURLOptionsKey : Any] = [:]
         ) -> Bool {
+            
+            var handled: Bool
+
+            handled = GIDSignIn.sharedInstance.handle(url)
+            if handled {
+              return true
+            }
+
+            // Handle other custom URL types.
             ApplicationDelegate.shared.application(
                 app,
                 open: url,
                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
                 annotation: options[UIApplication.OpenURLOptionsKey.annotation]
             )
+            
+            return false
         }  
     // MARK: UISceneSession Lifecycle
 

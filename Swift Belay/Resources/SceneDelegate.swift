@@ -7,6 +7,7 @@
 
 import UIKit
 import FacebookCore
+import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 

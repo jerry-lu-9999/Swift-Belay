@@ -7,12 +7,14 @@
 
 import UIKit
 import FacebookLogin
+import GoogleSignIn
 
 class SBLoginSignUpNavController: UINavigationController {
 
     var loginButton : UIButton!
     var signUpButton : UIButton!
     var fBLoginButton : FBLoginButton!
+    var googleLoginButton : GIDSignInButton!
     var userNameTextField : UITextField!
     var passwordTextField: UITextField!
     
@@ -40,12 +42,13 @@ class SBLoginSignUpNavController: UINavigationController {
         loginButton = UIButton(type: .system)
         loginButton.setTitle("Log In", for: .normal)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.backgroundColor = .blue
+        loginButton.tintColor = .white
         view.addSubview(loginButton)
         loginButton.addTarget(self, action: #selector(handleLoginTouchUpInside), for: .touchUpInside)
         
         fBLoginButton = FBLoginButton()
         fBLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        //fBLoginButton.center = view.center
         fBLoginButton.permissions = ["public_profile", "email"]
         view.addSubview(fBLoginButton)
         //TODO:
@@ -53,6 +56,11 @@ class SBLoginSignUpNavController: UINavigationController {
             !token.isExpired {
             // User is logged in, do work such as go to next view controller.
         }
+        
+        googleLoginButton = GIDSignInButton()
+        googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        googleLoginButton.style = .wide
+        view.addSubview(googleLoginButton)
         
         userNameTextField = UITextField(frame: .zero)
         userNameTextField.placeholder = "Username or Email"
@@ -78,6 +86,10 @@ class SBLoginSignUpNavController: UINavigationController {
             fBLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
             fBLoginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
             fBLoginButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            
+            googleLoginButton.topAnchor.constraint(equalTo: fBLoginButton.bottomAnchor, constant: 20),
+            googleLoginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            googleLoginButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
             
             passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
             passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
