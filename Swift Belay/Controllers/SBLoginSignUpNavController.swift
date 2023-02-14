@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import FacebookLogin
 
 class SBLoginSignUpNavController: UINavigationController {
 
     var loginButton : UIButton!
     var signUpButton : UIButton!
+    var fBLoginButton : FBLoginButton!
     var userNameTextField : UITextField!
     var passwordTextField: UITextField!
-    
     
     @objc func handleLoginTouchUpInside(){
         if userNameTextField.isFirstResponder{
@@ -42,6 +43,17 @@ class SBLoginSignUpNavController: UINavigationController {
         view.addSubview(loginButton)
         loginButton.addTarget(self, action: #selector(handleLoginTouchUpInside), for: .touchUpInside)
         
+        fBLoginButton = FBLoginButton()
+        fBLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        //fBLoginButton.center = view.center
+        fBLoginButton.permissions = ["public_profile", "email"]
+        view.addSubview(fBLoginButton)
+        //TODO:
+        if let token = AccessToken.current,
+            !token.isExpired {
+            // User is logged in, do work such as go to next view controller.
+        }
+        
         userNameTextField = UITextField(frame: .zero)
         userNameTextField.placeholder = "Username or Email"
         userNameTextField.borderStyle = .roundedRect
@@ -59,18 +71,24 @@ class SBLoginSignUpNavController: UINavigationController {
     }
     
     func setUpConstraints(){
-        
         NSLayoutConstraint.activate([
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         
+            fBLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
+            fBLoginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            fBLoginButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            
             passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
             passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
             passwordTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
         
             userNameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
             userNameTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)])
+            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
+        
+            
+            ])
     }
 
 }
