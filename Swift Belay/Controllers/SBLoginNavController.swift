@@ -9,12 +9,13 @@ import UIKit
 import FacebookLogin
 import GoogleSignIn
 
-class SBLoginSignUpNavController: UINavigationController {
+class SBLoginNavController: UIViewController {
 
     var loginButton : UIButton!
     var signUpButton : UIButton!
     var fBLoginButton : FBLoginButton!
     var googleLoginButton : GIDSignInButton!
+    
     var userNameTextField : UITextField!
     var passwordTextField: UITextField!
     
@@ -30,24 +31,33 @@ class SBLoginSignUpNavController: UINavigationController {
         homeVC.modalPresentationStyle = .fullScreen
         //self.pushViewController(homeVC, animated: true)
         self.present(homeVC, animated: true)
-        
-        print("clicking")
+
+    }
+    
+    @objc func handleSignUpTouchUpInside(){
+        let signUpVC = UINavigationController(rootViewController: SBSignUpViewController())
+        signUpVC.navigationBar.prefersLargeTitles = true
+        self.present(signUpVC, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = Constants.themeColor
         title = "Let's get started!"
         
-        loginButton = UIButton(type: .system)
-        loginButton.setTitle("Log In", for: .normal)
+        var signInConfig = UIButton.Configuration.filled()
+        signInConfig.cornerStyle = .capsule
+        signInConfig.baseBackgroundColor = .systemIndigo
+        signInConfig.title = "Sign In"
+        loginButton = UIButton(configuration: signInConfig, primaryAction: nil)
+        loginButton.setTitle("Sign In", for: .normal)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.backgroundColor = .blue
-        loginButton.tintColor = .white
+
         view.addSubview(loginButton)
         loginButton.addTarget(self, action: #selector(handleLoginTouchUpInside), for: .touchUpInside)
         
-        fBLoginButton = FBLoginButton()
+        fBLoginButton = FBLoginButton(type: .roundedRect)
         fBLoginButton.translatesAutoresizingMaskIntoConstraints = false
         fBLoginButton.permissions = ["public_profile", "email"]
         view.addSubview(fBLoginButton)
@@ -75,13 +85,29 @@ class SBLoginSignUpNavController: UINavigationController {
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(passwordTextField)
         
+        signUpButton = UIButton(configuration: signInConfig, primaryAction: nil)
+        signUpButton.setTitle("Sign Up", for: .normal)
+        signUpButton.translatesAutoresizingMaskIntoConstraints = false
+        signUpButton.addTarget(self, action: #selector(handleSignUpTouchUpInside), for: .touchUpInside)
+        view.addSubview(signUpButton)
+        
         setUpConstraints()
     }
     
     func setUpConstraints(){
         NSLayoutConstraint.activate([
+            userNameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
+            userNameTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            
+            passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            passwordTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            loginButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
         
             fBLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
             fBLoginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
@@ -91,15 +117,11 @@ class SBLoginSignUpNavController: UINavigationController {
             googleLoginButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
             googleLoginButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
             
-            passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            signUpButton.topAnchor.constraint(equalTo: googleLoginButton.bottomAnchor, constant: 20),
+            signUpButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
         
-            userNameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            userNameTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
         
-            
             ])
     }
 
