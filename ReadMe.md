@@ -2,10 +2,12 @@
 
 - [ ] App Logo
 - [x] Launch Screen
-- [ ] email/username log in
+- [ ] email log in
 - [ ] facebook log in
 - [ ] google log in
-- [ ] sign up
+
+- [ ] email sign up
+- [ ] authentication error handling
 - [ ] profile setup process
 
 
@@ -14,7 +16,5 @@
 
 ## Useful links
 
-* [Amplify Home](https://us-west-2.console.aws.amazon.com/amplify/home?region=us-west-2#/d4wu9labz0f2l)
-* [Amplify Tutorial] (https://docs.amplify.aws/lib/auth/signin/q/platform/ios/)
-
+* (Authentication docu) [https://firebase.google.com/docs/auth/ios/errors?authuser=0]
 

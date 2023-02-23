@@ -9,33 +9,38 @@ import UIKit
 import FacebookCore
 import GoogleSignIn
 
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseAuth
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+  
+        FirebaseApp.configure()
+
+        /// facebook
         ApplicationDelegate.shared.application(
                     application,
                     didFinishLaunchingWithOptions: launchOptions
         )
         
+        /// google
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+          if error != nil || user == nil {
+            
+          } else {
+            // Show the app's signed-in state.
+          }
+        }
         return true
     }
 
-    func application(
-            _ app: UIApplication,
-            open url: URL,
-            options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-        ) -> Bool {
-            
-            var handled: Bool
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
-            handled = GIDSignIn.sharedInstance.handle(url)
-            if handled {
-              return true
-            }
+        if GIDSignIn.sharedInstance.handle(url) {return true}
+
 
             // Handle other custom URL types.
             ApplicationDelegate.shared.application(
