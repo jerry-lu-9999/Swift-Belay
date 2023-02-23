@@ -242,7 +242,23 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     }
     
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        let token = result?.token?.tokenString
+        guard let token = result?.token?.tokenString else {
+            print("User failed to login with FB")
+            return
+        }
+        
+        let credential = FacebookAuthProvider.credential(withAccessToken: token)
+        
+        FirebaseAuth.Auth.auth().signIn(with: credential, completion: { authResult, error in
+            guard let result = authResult, error == nil else {
+                print("Facebook credential failed")
+                
+                return
+            }
+            print("Facebook Login success for user: \(result.user)")
+            
+        })
+        
         
         let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
                                                  parameters: ["fields":"email, name"],
@@ -250,7 +266,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                                                  version: nil,
                                                  httpMethod: .get)
         request.start(completionHandler: { connection, result, error in
-            print("\(result)")
+            
         })
         
         if let error = error {
