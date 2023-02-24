@@ -150,6 +150,7 @@
 		F56A9A39298DBAA0009C98FF /* APIClient */ = {
 			isa = PBXGroup;
 			children = (
+				F56A9A37298DBA8C009C98FF /* Managers */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -198,7 +199,6 @@
 				F56A9A3A298DBAA9009C98FF /* Models */,
 				F56A9A39298DBAA0009C98FF /* APIClient */,
 				F56A9A38298DBA93009C98FF /* Resources */,
-				F56A9A37298DBA8C009C98FF /* Managers */,
 				F56A9A36298DBA6E009C98FF /* Controllers */,
 				F5BF1B432988D090002119A2 /* Info.plist */,
 				F502ABC7299EF6580050826C /* GoogleService-Info.plist */,

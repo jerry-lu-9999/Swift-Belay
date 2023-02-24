@@ -19,16 +19,44 @@ class SBSignUpViewController: UIViewController {
     var signUpButton : UIButton!
     
     @objc func createNewAccount() {
+        
         guard let email    = emailTextField.text    else {return}
         guard let password = passwordTextField.text else {return}
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+        
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let result = authResult, error == nil else {
-                print("error creating user: \(error.debugDescription)")
+                var alertTitle: String!
+                var alertMessage: String? = "Please try again or reach out for support"
+                var alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                if let error = error as NSError? {
+                    if let authError = AuthErrorCode.Code(rawValue: error.code){
+                        switch authError {
+                        case .invalidEmail:
+                            alertTitle = "Please double check your email"
+                        case .emailAlreadyInUse:
+                            alertTitle = "Email already in use"
+                        case .operationNotAllowed:
+                            alertTitle = "Please authenticate your email first"
+                        case .weakPassword:
+                            alertTitle = "Weak Password"
+                        default:
+                            alertTitle = "ERROR"
+                            alertMessage = error.debugDescription
+                        }
+                    }
+                }
+                self?.present(alert, animated: true)
                 return
             }
             
             let user = result.user
             print("successfully created user: \(user)")
+            
+            let homeVC = SBTabBarController()
+            homeVC.modalPresentationStyle = .fullScreen
+            self?.present(homeVC, animated: true)
         }
         
     }

@@ -8,9 +8,11 @@
 import UIKit
 import FacebookLogin
 import GoogleSignIn
+
 import FirebaseCore
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class SBLoginNavController: UIViewController, LoginButtonDelegate {
 
@@ -19,20 +21,42 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     var fBLoginButton : FBLoginButton!
     var googleLoginButton : GIDSignInButton!
     
-    var userNameTextField : UITextField!
+    var emailTextField : UITextField!
     var passwordTextField: UITextField!
     
     @objc func handleLoginTouchUpInside(){
-        if userNameTextField.isFirstResponder{
-            userNameTextField.resignFirstResponder()
+        if emailTextField.isFirstResponder{
+            emailTextField.resignFirstResponder()
         }
         if passwordTextField.isFirstResponder{
             passwordTextField.resignFirstResponder()
         }
-        
-        FirebaseAuth.Auth.auth().signIn(withEmail: userNameTextField.text!, password: passwordTextField.text!, completion: { authResult, error in
+
+        FirebaseAuth.Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { [weak self] authResult, error in
             guard let result = authResult, error == nil else{
-                print("error signing in with email")
+                var alertTitle: String!
+                var alertMessage: String? = "Please try again or reach out for support"
+                var alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                if let error = error as NSError? {
+                    if let authError = AuthErrorCode.Code(rawValue: error.code){
+                        switch authError {
+                        case .operationNotAllowed:
+                            alertTitle = "Please authenticate your email"
+                        case .invalidEmail:
+                            alertTitle = "Please double check your email"
+                        case .userDisabled:
+                            alertTitle = "User Disabled"
+                        case .wrongPassword:
+                            alertTitle = "Wrong Password"
+                        default:
+                            alertTitle = "ERROR"
+                            alertMessage = error.debugDescription
+                        }
+                    }
+                }
+                self?.present(alert, animated: true)
                 return
             }
             
@@ -41,7 +65,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             let homeVC = SBTabBarController()
             homeVC.modalPresentationStyle = .fullScreen
-            self.present(homeVC, animated: true)
+            self?.present(homeVC, animated: true)
         })
 
     }
@@ -182,12 +206,12 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         //googleLoginButton.addTarget(self, action: #selector(handleGoogleLoginTouchUpInside), for: .touchUpInside)
         view.addSubview(googleLoginButton)
         
-        userNameTextField = UITextField(frame: .zero)
-        userNameTextField.placeholder = "Username or Email"
-        userNameTextField.borderStyle = .roundedRect
-        userNameTextField.autocapitalizationType = .none
-        userNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(userNameTextField)
+        emailTextField = UITextField(frame: .zero)
+        emailTextField.placeholder = "Email"
+        emailTextField.borderStyle = .roundedRect
+        emailTextField.autocapitalizationType = .none
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emailTextField)
         
         passwordTextField = UITextField(frame: .zero)
         passwordTextField.placeholder = "Enter Password"
@@ -207,9 +231,9 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     
     func setUpConstraints(){
         NSLayoutConstraint.activate([
-            userNameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            userNameTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            emailTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
+            emailTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            emailTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
             
             passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
             passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
@@ -236,7 +260,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             ])
     }
 
-    
+    /// login for using Facebook log out button
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
         
     }
@@ -274,7 +298,6 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
           return
         }
         
-//
     }
     
 }
