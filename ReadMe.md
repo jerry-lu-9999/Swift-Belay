@@ -6,10 +6,12 @@
 - [ ] facebook log in
 - [ ] google log in
 
-- [ ] email sign up
-- [ ] authentication error handling
-- [ ] profile setup process
+- [x] email sign up
+- [ ] email link authentication
 
+- [ ] authentication error handling
+
+- [ ] profile setup process
 
 - [ ] create a domain for our app
 
@@ -23,7 +25,5 @@
 * [Facebook] (http://github.com/facebook/facebook-ios-sdk)
 * [GoogleSignIn] (http://github.com/google/GoogleSignIn-iOS)
 * [Firebase] (https://github.com/firebase/firebase-ios-sdk)
-
-
 
 

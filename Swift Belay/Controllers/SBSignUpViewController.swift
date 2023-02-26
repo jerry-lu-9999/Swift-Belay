@@ -27,8 +27,6 @@ class SBSignUpViewController: UIViewController {
             guard let result = authResult, error == nil else {
                 var alertTitle: String!
                 var alertMessage: String? = "Please try again or reach out for support"
-                var alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
                 
                 if let error = error as NSError? {
                     if let authError = AuthErrorCode.Code(rawValue: error.code){
@@ -47,6 +45,10 @@ class SBSignUpViewController: UIViewController {
                         }
                     }
                 }
+                let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                print("Sign up error: \(error.debugDescription)")
                 self?.present(alert, animated: true)
                 return
             }

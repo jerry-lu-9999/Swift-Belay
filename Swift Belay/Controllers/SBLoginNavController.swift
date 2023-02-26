@@ -11,8 +11,7 @@ import GoogleSignIn
 
 import FirebaseCore
 import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
+import FirebaseDatabase
 
 class SBLoginNavController: UIViewController, LoginButtonDelegate {
 
@@ -23,6 +22,9 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     
     var emailTextField : UITextField!
     var passwordTextField: UITextField!
+//
+//    var ref : DatabaseReference!
+//    ref = Database.database().reference()
     
     @objc func handleLoginTouchUpInside(){
         if emailTextField.isFirstResponder{
@@ -36,8 +38,6 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             guard let result = authResult, error == nil else{
                 var alertTitle: String!
                 var alertMessage: String? = "Please try again or reach out for support"
-                var alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
                 
                 if let error = error as NSError? {
                     if let authError = AuthErrorCode.Code(rawValue: error.code){
@@ -56,6 +56,10 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                         }
                     }
                 }
+                let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                print("Login error: \(error.debugDescription)")
                 self?.present(alert, animated: true)
                 return
             }
@@ -76,101 +80,44 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         self.present(signUpVC, animated: true)
     }
     
-    /*
     @objc func handleGoogleLoginTouchUpInside(){
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
 
-        var isMFAEnabled = false
-        // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
         
         // Start the sign in flow!
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
-
-            guard error == nil else {return}
-
-          guard
-            let authentication = signInResult.authentication
-            let idToken = authentication.idToken
-          else {
-            return
-          }
-
-          let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                         accessToken: authentication.accessToken)
-
-        
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard error == nil else {
+                print("Sign in With google failed:\(error.debugDescription)")
+                return
+            }
+            guard let user = signInResult?.user, let idToken = user.idToken?.tokenString else{
+                return
+            }
+            
+            let email = user.profile?.email
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+            
             Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
-                  let authError = error as NSError
-                  if isMFAEnabled, authError.code == AuthErrorCode.secondFactorRequired.rawValue {
-                    // The user is a multi-factor user. Second factor challenge is required.
-                    let resolver = authError
-                      .userInfo[AuthErrorUserInfoMultiFactorResolverKey] as! MultiFactorResolver
-                    var displayNameString = ""
-                    for tmpFactorInfo in resolver.hints {
-                      displayNameString += tmpFactorInfo.displayName ?? ""
-                      displayNameString += " "
-                    }
-                    self.showTextInputPrompt(
-                      withMessage: "Select factor to sign in\n\(displayNameString)",
-                      completionBlock: { userPressedOK, displayName in
-                        var selectedHint: PhoneMultiFactorInfo?
-                        for tmpFactorInfo in resolver.hints {
-                          if displayName == tmpFactorInfo.displayName {
-                            selectedHint = tmpFactorInfo as? PhoneMultiFactorInfo
-                          }
-                        }
-                        PhoneAuthProvider.provider()
-                          .verifyPhoneNumber(with: selectedHint!, uiDelegate: nil,
-                                             multiFactorSession: resolver
-                                               .session) { verificationID, error in
-                            if error != nil {
-                              print(
-                                "Multi factor start sign in failed. Error: \(error.debugDescription)"
-                              )
-                            } else {
-                              self.showTextInputPrompt(
-                                withMessage: "Verification code for \(selectedHint?.displayName ?? "")",
-                                completionBlock: { userPressedOK, verificationCode in
-                                  let credential: PhoneAuthCredential? = PhoneAuthProvider.provider()
-                                    .credential(withVerificationID: verificationID!,
-                                                verificationCode: verificationCode!)
-                                  let assertion: MultiFactorAssertion? = PhoneMultiFactorGenerator
-                                    .assertion(with: credential!)
-                                  resolver.resolveSignIn(with: assertion!) { authResult, error in
-                                    if error != nil {
-                                      print(
-                                        "Multi factor finanlize sign in failed. Error: \(error.debugDescription)"
-                                      )
-                                    } else {
-                                      self.navigationController?.popViewController(animated: true)
-                                    }
-                                  }
-                                }
-                              )
-                            }
-                          }
-                      }
-                    )
-                  } else {
-                    self.showMessagePrompt(error.localizedDescription)
-                    return
-                  }
-                  // ...
-                  return
+                guard let result = authResult, error == nil else {
+                    print("Google Sign in Error")
+                    return 
                 }
-                // User is signed in
-                // ...
+                
+                let user = result.user
+                print("Logged In User: \(user)")
+                
+                let homeVC = SBTabBarController()
+                homeVC.modalPresentationStyle = .fullScreen
+                self?.present(homeVC, animated: true)
             }
         }
-        
-        
     }
-    */
     
     override func viewDidLoad() {
+    
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = Constants.themeColor
@@ -203,7 +150,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         googleLoginButton = GIDSignInButton()
         googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
         googleLoginButton.style = .wide
-        //googleLoginButton.addTarget(self, action: #selector(handleGoogleLoginTouchUpInside), for: .touchUpInside)
+        googleLoginButton.addTarget(self, action: #selector(handleGoogleLoginTouchUpInside), for: .touchUpInside)
         view.addSubview(googleLoginButton)
         
         emailTextField = UITextField(frame: .zero)
@@ -271,25 +218,70 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             return
         }
         
-        let credential = FacebookAuthProvider.credential(withAccessToken: token)
-        
-        FirebaseAuth.Auth.auth().signIn(with: credential, completion: { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("Facebook credential failed")
-                
-                return
-            }
-            print("Facebook Login success for user: \(result.user)")
-            
-        })
-        
-        
         let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
                                                  parameters: ["fields":"email, name"],
                                                  tokenString: token,
                                                  version: nil,
                                                  httpMethod: .get)
+        
         request.start(completionHandler: { connection, result, error in
+            guard let result = result as? [String:Any], error == nil else{
+                print("Failed to make facebook graphic request")
+                return
+            }
+            
+            guard let userName = result["name"] as? String, let email = result["email"] as? String else{
+                print("failed to get email and name from fb result")
+                return
+            }
+            
+            let nameComponents = userName.components(separatedBy: " ")
+            guard nameComponents.count == 2 else {return}
+            
+            let firstName = nameComponents[0]
+            let lastName  = nameComponents[1]
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                guard let result = authResult, error == nil else {
+                    
+                    var alertTitle: String!
+                    var alertMessage: String? = "Please try again or reach out for support"
+                    
+                    if let error = error as NSError? {
+                        if let authError = AuthErrorCode.Code(rawValue: error.code){
+                            switch authError{
+                            case .invalidCredential:
+                                alertTitle = "Invalid Credential"
+                            case .invalidEmail:
+                                alertTitle = "Please double check your email"
+                            case .emailAlreadyInUse:
+                                alertTitle = "Email already in use"
+                            case .operationNotAllowed:
+                                alertTitle = "Please authenticate your email first"
+                            case .userDisabled:
+                                alertTitle = "User Disabled"
+                            default:
+                                alertTitle = "ERROR"
+                                alertMessage = error.debugDescription
+                            }
+                       
+                        }
+                    }
+                    let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    
+                    print("Facebook credential failed: \(error.debugDescription)")
+                    
+                    return
+                }
+                print("Facebook Login success for user: \(result.user)")
+                
+                let homeVC = SBTabBarController()
+                homeVC.modalPresentationStyle = .fullScreen
+                self?.present(homeVC, animated: true)
+            })
             
         })
         
