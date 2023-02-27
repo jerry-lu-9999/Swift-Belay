@@ -140,13 +140,6 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         fBLoginButton.delegate = self
         view.addSubview(fBLoginButton)
         
-        
-        // TODO: -
-        if let token = AccessToken.current,
-            !token.isExpired {
-            // User is logged in, do work such as go to next view controller.
-        }
-        
         googleLoginButton = GIDSignInButton()
         googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
         googleLoginButton.style = .wide
@@ -201,9 +194,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             signUpButton.topAnchor.constraint(equalTo: googleLoginButton.bottomAnchor, constant: 20),
             signUpButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
-        
-        
+            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
             ])
     }
 
@@ -230,7 +221,8 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 return
             }
             
-            guard let userName = result["name"] as? String, let email = result["email"] as? String else{
+            guard let userName = result["name"] as? String,
+                  let email = result["email"] as? String else{
                 print("failed to get email and name from fb result")
                 return
             }
@@ -240,6 +232,12 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             let firstName = nameComponents[0]
             let lastName  = nameComponents[1]
+            
+            DatabaseManager.shared.containUser(with: email, completion: { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: BelayUser(firstName: firstName, lastName: lastName, email: email))
+                }
+            })
             
             let credential = FacebookAuthProvider.credential(withAccessToken: token)
             

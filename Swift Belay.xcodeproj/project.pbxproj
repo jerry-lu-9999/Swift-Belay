@@ -31,6 +31,8 @@
 		F5BF1B4D2988D090002119A2 /* Swift_BelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B4C2988D090002119A2 /* Swift_BelayTests.swift */; };
 		F5BF1B572988D090002119A2 /* Swift_BelayUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B562988D090002119A2 /* Swift_BelayUITests.swift */; };
 		F5BF1B592988D090002119A2 /* Swift_BelayUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF1B582988D090002119A2 /* Swift_BelayUITestsLaunchTests.swift */; };
+		F5C34A9F29AC721700541B06 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34A9E29AC721700541B06 /* DatabaseManager.swift */; };
+		F5C34AA129AC958E00541B06 /* BelayUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34AA029AC958E00541B06 /* BelayUser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		F5BF1B562988D090002119A2 /* Swift_BelayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_BelayUITests.swift; sourceTree = "<group>"; };
 		F5BF1B582988D090002119A2 /* Swift_BelayUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_BelayUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F5BF1B652988D461002119A2 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
+		F5C34A9E29AC721700541B06 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		F5C34AA029AC958E00541B06 /* BelayUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BelayUser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +147,8 @@
 				F5BF1B372988D08E002119A2 /* SceneDelegate.swift */,
 				F5BF1B3E2988D090002119A2 /* Assets.xcassets */,
 				F5BF1B402988D090002119A2 /* LaunchScreen.storyboard */,
+				F5C34A9E29AC721700541B06 /* DatabaseManager.swift */,
+				F5C34AA029AC958E00541B06 /* BelayUser.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -372,6 +378,8 @@
 			files = (
 				F5BF1B3A2988D08E002119A2 /* SBTabBarController.swift in Sources */,
 				F56A9A41298DBBD9009C98FF /* SBProfileViewController.swift in Sources */,
+				F5C34A9F29AC721700541B06 /* DatabaseManager.swift in Sources */,
+				F5C34AA129AC958E00541B06 /* BelayUser.swift in Sources */,
 				F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */,
 				F56A9A3D298DBBBC009C98FF /* SBHomeViewController.swift in Sources */,
 				F56A9A4A29922D94009C98FF /* Constants.swift in Sources */,

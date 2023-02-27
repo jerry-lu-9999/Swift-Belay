@@ -5,11 +5,15 @@
 - [ ] email log in
 - [ ] facebook log in
 - [ ] google log in
+- [ ] authentication error handling
 
 - [x] email sign up
 - [ ] email link authentication
 
-- [ ] authentication error handling
+- [ ] forget the password? 
+- [ ] reset the password
+- [ ] link multiple social network together
+- [ ] change the email address in profile page
 
 - [ ] profile setup process
 
@@ -25,5 +29,16 @@
 * [Facebook] (http://github.com/facebook/facebook-ios-sdk)
 * [GoogleSignIn] (http://github.com/google/GoogleSignIn-iOS)
 * [Firebase] (https://github.com/firebase/firebase-ios-sdk)
+
+## Database
+
+We use [Realtime Database](https://firebase.google.com/docs/database/ios/start?authuser=0) from Firebase, which means it will be in the form of JSON
+Our database will look like this
+{
+    "user email": {
+        "first_name" : 
+        "last_name" :
+    }
+}
 
 
