@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 /// Controller for the root tab controller and chat, profile controller
 class SBTabBarController: UITabBarController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Constants.themeColor
+        view.backgroundColor = .green
         setUpThreeTabs()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        validateAuthentication()
     }
     
     private func setUpThreeTabs(){
@@ -46,8 +53,15 @@ class SBTabBarController: UITabBarController{
         setViewControllers([nav1, nav2, nav3], animated: true)
     }
 
-
-    
+    private func validateAuthentication(){
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            print("I'm loged in")
+            let loginVC = SBLoginNavController()
+            let nav     = UINavigationController(rootViewController: loginVC)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
+        }
+    }
     
 }
 

@@ -39,9 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
-        if GIDSignIn.sharedInstance.handle(url) {return true}
-
-
             // Handle other custom URL types.
             ApplicationDelegate.shared.application(
                 app,
@@ -50,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 annotation: options[UIApplication.OpenURLOptionsKey.annotation]
             )
             
-            return false
+            return GIDSignIn.sharedInstance.handle(url)
         }  
     // MARK: UISceneSession Lifecycle
 
@@ -66,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
+    
+    
 }
 

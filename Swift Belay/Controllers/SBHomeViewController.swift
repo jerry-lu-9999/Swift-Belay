@@ -6,15 +6,15 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SBHomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .green
         title = "Home"
-        
     }
     
-
+    
 }

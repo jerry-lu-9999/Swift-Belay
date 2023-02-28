@@ -13,7 +13,6 @@ class SBChatViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Chat"
-        // Do any additional setup after loading the view.
     }
     
 

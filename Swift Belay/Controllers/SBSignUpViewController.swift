@@ -19,18 +19,61 @@ class SBSignUpViewController: UIViewController {
     var signUpButton : UIButton!
     
     @objc func createNewAccount() {
-        guard let email    = emailTextField.text    else {return}
-        guard let password = passwordTextField.text else {return}
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("error creating user: \(error.debugDescription)")
+        
+        guard let email    = emailTextField.text,
+              let password = passwordTextField.text,
+                  !email.isEmpty,
+                  !password.isEmpty
+        else {return}
+
+        // TODO: - a better way to handle errors
+        
+        DatabaseManager.shared.containUser(with: email, completion: { exist in
+            guard !exist else {
+                //user already exist
                 return
             }
             
-            let user = result.user
-            print("successfully created user: \(user)")
-        }
-        
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+                guard let result = authResult, error == nil else {
+                    var alertTitle: String!
+                    var alertMessage: String = "Please try again or reach out for support"
+                    
+                    if let error = error as NSError? {
+                        if let authError = AuthErrorCode.Code(rawValue: error.code){
+                            switch authError {
+                            case .invalidEmail:
+                                alertTitle = "Please double check your email"
+                            case .emailAlreadyInUse:
+                                alertTitle = "Email already in use"
+                            case .operationNotAllowed:
+                                alertTitle = "Please authenticate your email first"
+                            case .weakPassword:
+                                alertTitle = "Weak Password"
+                            default:
+                                alertTitle = "ERROR"
+                                alertMessage = error.debugDescription
+                            }
+                        }
+                    }
+                    let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    
+                    print("Sign up error: \(error.debugDescription)")
+                    self?.present(alert, animated: true)
+                    return
+                }
+                
+                DatabaseManager.shared.insertUser(with: BelayUser(firstName: "", lastName: "", email: email))
+                
+                let user = result.user
+                print("successfully created user: \(user)")
+                
+                let homeVC = SBTabBarController()
+                homeVC.modalPresentationStyle = .fullScreen
+                self?.present(homeVC, animated: true)
+            }
+        })
     }
     
     override func viewDidLoad() {

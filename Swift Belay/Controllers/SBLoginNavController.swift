@@ -8,9 +8,10 @@
 import UIKit
 import FacebookLogin
 import GoogleSignIn
+
 import FirebaseCore
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseDatabase
 
 class SBLoginNavController: UIViewController, LoginButtonDelegate {
 
@@ -19,20 +20,47 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     var fBLoginButton : FBLoginButton!
     var googleLoginButton : GIDSignInButton!
     
-    var userNameTextField : UITextField!
+    var emailTextField : UITextField!
     var passwordTextField: UITextField!
+//
+//    var ref : DatabaseReference!
+//    ref = Database.database().reference()
     
     @objc func handleLoginTouchUpInside(){
-        if userNameTextField.isFirstResponder{
-            userNameTextField.resignFirstResponder()
+        if emailTextField.isFirstResponder{
+            emailTextField.resignFirstResponder()
         }
         if passwordTextField.isFirstResponder{
             passwordTextField.resignFirstResponder()
         }
-        
-        FirebaseAuth.Auth.auth().signIn(withEmail: userNameTextField.text!, password: passwordTextField.text!, completion: { authResult, error in
+
+        FirebaseAuth.Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { [weak self] authResult, error in
             guard let result = authResult, error == nil else{
-                print("error signing in with email")
+                var alertTitle: String!
+                var alertMessage: String? = "Please try again or reach out for support"
+                
+                if let error = error as NSError? {
+                    if let authError = AuthErrorCode.Code(rawValue: error.code){
+                        switch authError {
+                        case .operationNotAllowed:
+                            alertTitle = "Please authenticate your email"
+                        case .invalidEmail:
+                            alertTitle = "Please double check your email"
+                        case .userDisabled:
+                            alertTitle = "User Disabled"
+                        case .wrongPassword:
+                            alertTitle = "Wrong Password"
+                        default:
+                            alertTitle = "ERROR"
+                            alertMessage = error.debugDescription
+                        }
+                    }
+                }
+                let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                print("Login error: \(error.debugDescription)")
+                self?.present(alert, animated: true)
                 return
             }
             
@@ -41,7 +69,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             let homeVC = SBTabBarController()
             homeVC.modalPresentationStyle = .fullScreen
-            self.present(homeVC, animated: true)
+            self?.present(homeVC, animated: true)
         })
 
     }
@@ -52,101 +80,44 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         self.present(signUpVC, animated: true)
     }
     
-    /*
     @objc func handleGoogleLoginTouchUpInside(){
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
 
-        var isMFAEnabled = false
-        // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
         
         // Start the sign in flow!
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
-
-            guard error == nil else {return}
-
-          guard
-            let authentication = signInResult.authentication
-            let idToken = authentication.idToken
-          else {
-            return
-          }
-
-          let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                         accessToken: authentication.accessToken)
-
-        
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard error == nil else {
+                print("Sign in With google failed:\(error.debugDescription)")
+                return
+            }
+            guard let user = signInResult?.user, let idToken = user.idToken?.tokenString else{
+                return
+            }
+            
+            let email = user.profile?.email
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+            
             Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
-                  let authError = error as NSError
-                  if isMFAEnabled, authError.code == AuthErrorCode.secondFactorRequired.rawValue {
-                    // The user is a multi-factor user. Second factor challenge is required.
-                    let resolver = authError
-                      .userInfo[AuthErrorUserInfoMultiFactorResolverKey] as! MultiFactorResolver
-                    var displayNameString = ""
-                    for tmpFactorInfo in resolver.hints {
-                      displayNameString += tmpFactorInfo.displayName ?? ""
-                      displayNameString += " "
-                    }
-                    self.showTextInputPrompt(
-                      withMessage: "Select factor to sign in\n\(displayNameString)",
-                      completionBlock: { userPressedOK, displayName in
-                        var selectedHint: PhoneMultiFactorInfo?
-                        for tmpFactorInfo in resolver.hints {
-                          if displayName == tmpFactorInfo.displayName {
-                            selectedHint = tmpFactorInfo as? PhoneMultiFactorInfo
-                          }
-                        }
-                        PhoneAuthProvider.provider()
-                          .verifyPhoneNumber(with: selectedHint!, uiDelegate: nil,
-                                             multiFactorSession: resolver
-                                               .session) { verificationID, error in
-                            if error != nil {
-                              print(
-                                "Multi factor start sign in failed. Error: \(error.debugDescription)"
-                              )
-                            } else {
-                              self.showTextInputPrompt(
-                                withMessage: "Verification code for \(selectedHint?.displayName ?? "")",
-                                completionBlock: { userPressedOK, verificationCode in
-                                  let credential: PhoneAuthCredential? = PhoneAuthProvider.provider()
-                                    .credential(withVerificationID: verificationID!,
-                                                verificationCode: verificationCode!)
-                                  let assertion: MultiFactorAssertion? = PhoneMultiFactorGenerator
-                                    .assertion(with: credential!)
-                                  resolver.resolveSignIn(with: assertion!) { authResult, error in
-                                    if error != nil {
-                                      print(
-                                        "Multi factor finanlize sign in failed. Error: \(error.debugDescription)"
-                                      )
-                                    } else {
-                                      self.navigationController?.popViewController(animated: true)
-                                    }
-                                  }
-                                }
-                              )
-                            }
-                          }
-                      }
-                    )
-                  } else {
-                    self.showMessagePrompt(error.localizedDescription)
-                    return
-                  }
-                  // ...
-                  return
+                guard let result = authResult, error == nil else {
+                    print("Google Sign in Error")
+                    return 
                 }
-                // User is signed in
-                // ...
+                
+                let user = result.user
+                print("Logged In User: \(user)")
+                
+                let homeVC = SBTabBarController()
+                homeVC.modalPresentationStyle = .fullScreen
+                self?.present(homeVC, animated: true)
             }
         }
-        
-        
     }
-    */
     
     override func viewDidLoad() {
+    
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = Constants.themeColor
@@ -169,25 +140,18 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         fBLoginButton.delegate = self
         view.addSubview(fBLoginButton)
         
-        
-        // TODO: -
-        if let token = AccessToken.current,
-            !token.isExpired {
-            // User is logged in, do work such as go to next view controller.
-        }
-        
         googleLoginButton = GIDSignInButton()
         googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
         googleLoginButton.style = .wide
-        //googleLoginButton.addTarget(self, action: #selector(handleGoogleLoginTouchUpInside), for: .touchUpInside)
+        googleLoginButton.addTarget(self, action: #selector(handleGoogleLoginTouchUpInside), for: .touchUpInside)
         view.addSubview(googleLoginButton)
         
-        userNameTextField = UITextField(frame: .zero)
-        userNameTextField.placeholder = "Username or Email"
-        userNameTextField.borderStyle = .roundedRect
-        userNameTextField.autocapitalizationType = .none
-        userNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(userNameTextField)
+        emailTextField = UITextField(frame: .zero)
+        emailTextField.placeholder = "Email"
+        emailTextField.borderStyle = .roundedRect
+        emailTextField.autocapitalizationType = .none
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emailTextField)
         
         passwordTextField = UITextField(frame: .zero)
         passwordTextField.placeholder = "Enter Password"
@@ -207,9 +171,9 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     
     func setUpConstraints(){
         NSLayoutConstraint.activate([
-            userNameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            userNameTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            userNameTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            emailTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
+            emailTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            emailTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
             
             passwordTextField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
             passwordTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
@@ -230,13 +194,11 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             signUpButton.topAnchor.constraint(equalTo: googleLoginButton.bottomAnchor, constant: 20),
             signUpButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
-        
-        
+            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
             ])
     }
 
-    
+    /// login for using Facebook log out button
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
         
     }
@@ -247,25 +209,77 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             return
         }
         
-        let credential = FacebookAuthProvider.credential(withAccessToken: token)
-        
-        FirebaseAuth.Auth.auth().signIn(with: credential, completion: { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("Facebook credential failed")
-                
-                return
-            }
-            print("Facebook Login success for user: \(result.user)")
-            
-        })
-        
-        
         let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
                                                  parameters: ["fields":"email, name"],
                                                  tokenString: token,
                                                  version: nil,
                                                  httpMethod: .get)
+        
         request.start(completionHandler: { connection, result, error in
+            guard let result = result as? [String:Any], error == nil else{
+                print("Failed to make facebook graphic request")
+                return
+            }
+            
+            guard let userName = result["name"] as? String,
+                  let email = result["email"] as? String else{
+                print("failed to get email and name from fb result")
+                return
+            }
+            
+            let nameComponents = userName.components(separatedBy: " ")
+            guard nameComponents.count == 2 else {return}
+            
+            let firstName = nameComponents[0]
+            let lastName  = nameComponents[1]
+            
+            DatabaseManager.shared.containUser(with: email, completion: { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: BelayUser(firstName: firstName, lastName: lastName, email: email))
+                }
+            })
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                guard let result = authResult, error == nil else {
+                    
+                    var alertTitle: String!
+                    var alertMessage: String? = "Please try again or reach out for support"
+                    
+                    if let error = error as NSError? {
+                        if let authError = AuthErrorCode.Code(rawValue: error.code){
+                            switch authError{
+                            case .invalidCredential:
+                                alertTitle = "Invalid Credential"
+                            case .invalidEmail:
+                                alertTitle = "Please double check your email"
+                            case .emailAlreadyInUse:
+                                alertTitle = "Email already in use"
+                            case .operationNotAllowed:
+                                alertTitle = "Please authenticate your email first"
+                            case .userDisabled:
+                                alertTitle = "User Disabled"
+                            default:
+                                alertTitle = "ERROR"
+                                alertMessage = error.debugDescription
+                            }
+                       
+                        }
+                    }
+                    let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    
+                    print("Facebook credential failed: \(error.debugDescription)")
+                    
+                    return
+                }
+                print("Facebook Login success for user: \(result.user)")
+                
+                let homeVC = SBTabBarController()
+                homeVC.modalPresentationStyle = .fullScreen
+                self?.present(homeVC, animated: true)
+            })
             
         })
         
@@ -274,7 +288,6 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
           return
         }
         
-//
     }
     
 }
