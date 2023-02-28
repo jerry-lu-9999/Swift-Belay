@@ -18,3 +18,8 @@ struct BelayUser{
         return safeEmail
     }
 }
+
+
+extension BelayUser {
+    static let testUser: BelayUser = BelayUser(firstName: "Bob", lastName: "Joe", email: "bob@gmail.com")
+}
