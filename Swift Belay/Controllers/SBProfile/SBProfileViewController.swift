@@ -7,6 +7,7 @@
 
 import UIKit
 
+import GoogleSignIn
 import FirebaseAuth
 
 class SBProfileViewController: UIViewController {
@@ -17,6 +18,8 @@ class SBProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Accounts page")
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
         configureUI()
     }
 
@@ -109,10 +112,36 @@ extension SBProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .Social:
-            print(SocialOptions(rawValue: indexPath.row)?.description ?? "default")
+            guard let social = SocialOptions(rawValue: indexPath.row) else {return}
+            switch social {
+            case .editProfile:
+                print(social.description)
+            case .logout:
+                logout(sender: self)
+            }
         case .Communications:
             print(CommunicationOptions(rawValue: indexPath.row)?.description ?? "default")
         }
+    }
+    
+    func logout(sender: Any){
+        print("Current User")
+        print(GIDSignIn.sharedInstance.currentUser ?? "no google user")
+        print(Auth.auth().currentUser ?? "no Firebase user")
+        print("Trying to log out")
+        GIDSignIn.sharedInstance.signOut()
+        print(GIDSignIn.sharedInstance.currentUser ?? "no google user")
+        
+        
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+        print(Auth.auth().currentUser ?? "no Firebase user")
+        
+        self.present(SBLoginNavController(), animated: false)
     }
 }
 

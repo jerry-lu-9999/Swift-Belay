@@ -20,7 +20,11 @@ class SBTabBarController: UITabBarController{
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
+        
         validateAuthentication()
+        
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
     }
     
     private func setUpThreeTabs(){
