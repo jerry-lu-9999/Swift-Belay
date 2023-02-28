@@ -107,7 +107,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 }
                 
                 let user = result.user
-                print("Logged In User: \(user)")
+                print("Logged In User: \(user) via Google")
                 
                 let homeVC = SBTabBarController()
                 homeVC.modalPresentationStyle = .fullScreen
