@@ -26,9 +26,9 @@
 
 ## Packages we use
 
-* [Facebook] (http://github.com/facebook/facebook-ios-sdk)
-* [GoogleSignIn] (http://github.com/google/GoogleSignIn-iOS)
-* [Firebase] (https://github.com/firebase/firebase-ios-sdk)
+* [Facebook](http://github.com/facebook/facebook-ios-sdk)
+* [GoogleSignIn](http://github.com/google/GoogleSignIn-iOS)
+* [Firebase](https://github.com/firebase/firebase-ios-sdk)
 
 ## Database
 

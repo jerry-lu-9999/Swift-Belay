@@ -84,6 +84,7 @@
 		F5BF1B652988D461002119A2 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		F5C34A9E29AC721700541B06 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F5C34AA029AC958E00541B06 /* BelayUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BelayUser.swift; sourceTree = "<group>"; };
+		F5C34AA329AEB29200541B06 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +177,7 @@
 		F5BF1B292988D08E002119A2 = {
 			isa = PBXGroup;
 			children = (
+				F5C34AA329AEB29200541B06 /* .gitignore */,
 				F5BF1B652988D461002119A2 /* ReadMe.md */,
 				F5BF1B342988D08E002119A2 /* Swift Belay */,
 				F5BF1B4B2988D090002119A2 /* Swift BelayTests */,
