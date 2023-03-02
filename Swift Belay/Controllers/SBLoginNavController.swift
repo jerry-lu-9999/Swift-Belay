@@ -19,12 +19,10 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
     var signUpButton : UIButton!
     var fBLoginButton : FBLoginButton!
     var googleLoginButton : GIDSignInButton!
+    var hint :  UILabel!
     
     var emailTextField : UITextField!
     var passwordTextField: UITextField!
-//
-//    var ref : DatabaseReference!
-//    ref = Database.database().reference()
     
     @objc func handleLoginTouchUpInside(){
         if emailTextField.isFirstResponder{
@@ -65,19 +63,17 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             }
             
             let user = result.user
+            UDM.shared.defaults.setValue(self?.emailTextField.text!, forKey: "lastUsedEmail")
             print("Logged In User: \(user)")
             
-            let homeVC = SBTabBarController()
-            homeVC.modalPresentationStyle = .fullScreen
-            self?.present(homeVC, animated: true)
+            self?.navigationController?.dismiss(animated: true)
         })
 
     }
     
     @objc func handleSignUpTouchUpInside(){
-        let signUpVC = UINavigationController(rootViewController: SBSignUpViewController())
-        signUpVC.navigationBar.prefersLargeTitles = true
-        self.present(signUpVC, animated: true)
+        let signUpVC =  SBSignUpViewController()
+        navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     @objc func handleGoogleLoginTouchUpInside(){
@@ -96,7 +92,18 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 return
             }
             
-            let email = user.profile?.email
+            guard let email = user.profile?.email as? String,
+                  let firstName = user.profile?.givenName as? String,
+                    let lastName = user.profile?.familyName as? String else{
+                return
+            }
+            
+            UDM.shared.defaults.setValue(email, forKey: "lastUsedEmail")
+            DatabaseManager.shared.containUser(with: email, completion: { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: BelayUser(firstName: firstName, lastName: lastName, email: email))
+                }
+            })
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
             
@@ -109,15 +116,12 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 let user = result.user
                 print("Logged In User: \(user) via Google")
                 
-                let homeVC = SBTabBarController()
-                homeVC.modalPresentationStyle = .fullScreen
-                self?.present(homeVC, animated: true)
+                self?.dismiss(animated: true)
             }
         }
     }
     
     override func viewDidLoad() {
-    
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = Constants.themeColor
@@ -166,6 +170,29 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         signUpButton.addTarget(self, action: #selector(handleSignUpTouchUpInside), for: .touchUpInside)
         view.addSubview(signUpButton)
         
+        hint = UILabel()
+        hint.translatesAutoresizingMaskIntoConstraints = false
+        hint.text = "You signed in last time with your "
+        hint.textAlignment = .center
+        hint.lineBreakMode = .byWordWrapping
+        hint.numberOfLines = 2
+        hint.isHidden = true
+        if let email = UDM.shared.defaults.value(forKey: "lastUsedEmail") as? String {
+            print(email)
+            Auth.auth().fetchSignInMethods(forEmail: email, completion: { [weak self] signInMethods, error in
+                guard error == nil else {
+                    self?.hint.text = error.debugDescription
+                    return
+                }
+                if let method = signInMethods?[0] as? String {
+                    self?.hint.text?.append(method)
+                }
+                hint.isHidden = false
+            })
+        }
+        
+        view.addSubview(hint)
+        
         setUpConstraints()
     }
     
@@ -194,7 +221,11 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             signUpButton.topAnchor.constraint(equalTo: googleLoginButton.bottomAnchor, constant: 20),
             signUpButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
+            signUpButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
+            
+            hint.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 20),
+            hint.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
+            hint.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20)
             ])
     }
 
@@ -233,6 +264,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             let firstName = nameComponents[0]
             let lastName  = nameComponents[1]
             
+            UDM.shared.defaults.setValue(email, forKey: "lastUsedEmail")
             DatabaseManager.shared.containUser(with: email, completion: { exists in
                 if !exists {
                     DatabaseManager.shared.insertUser(with: BelayUser(firstName: firstName, lastName: lastName, email: email))
@@ -276,9 +308,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 }
                 print("Facebook Login success for user: \(result.user)")
                 
-                let homeVC = SBTabBarController()
-                homeVC.modalPresentationStyle = .fullScreen
-                self?.present(homeVC, animated: true)
+                self?.dismiss(animated: true)
             })
             
         })

@@ -20,11 +20,11 @@ class SBTabBarController: UITabBarController{
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user TabBarController before")
         
         validateAuthentication()
         
-        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user TabBarController after")
     }
     
     private func setUpThreeTabs(){
@@ -59,7 +59,7 @@ class SBTabBarController: UITabBarController{
 
     private func validateAuthentication(){
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            print("I'm loged in")
+            print("I'm not logged in: TabBarController")
             let loginVC = SBLoginNavController()
             let nav     = UINavigationController(rootViewController: loginVC)
             nav.modalPresentationStyle = .fullScreen

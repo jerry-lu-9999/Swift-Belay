@@ -66,9 +66,12 @@ class SBSignUpViewController: UIViewController {
                 
                 DatabaseManager.shared.insertUser(with: BelayUser(firstName: "", lastName: "", email: email))
                 
+                UDM.shared.defaults.setValue(email, forKey: "lastUsedEmail")
+                
                 let user = result.user
                 print("successfully created user: \(user)")
                 
+                self?.navigationController?.dismiss(animated: true)
                 let homeVC = SBTabBarController()
                 homeVC.modalPresentationStyle = .fullScreen
                 self?.present(homeVC, animated: true)
