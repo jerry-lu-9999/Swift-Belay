@@ -187,7 +187,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 if let method = signInMethods?[0] as? String {
                     self?.hint.text?.append(method)
                 }
-                hint.isHidden = false
+                self?.hint.isHidden = false
             })
         }
         
