@@ -34,7 +34,7 @@ class SBSignUpViewController: UIViewController {
                 return
             }
             
-            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
                 guard let result = authResult, error == nil else {
                     var alertTitle: String!
                     var alertMessage: String = "Please try again or reach out for support"
@@ -66,13 +66,16 @@ class SBSignUpViewController: UIViewController {
                 
                 DatabaseManager.shared.insertUser(with: BelayUser(firstName: "", lastName: "", email: email))
                 
+                UDM.shared.defaults.setValue(email, forKey: "lastUsedEmail")
+                
                 let user = result.user
                 print("successfully created user: \(user)")
                 
+                self?.navigationController?.dismiss(animated: true)
                 let homeVC = SBTabBarController()
                 homeVC.modalPresentationStyle = .fullScreen
                 self?.present(homeVC, animated: true)
-            }
+            })
         })
     }
     

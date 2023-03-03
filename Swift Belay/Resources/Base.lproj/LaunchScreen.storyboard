@@ -15,24 +15,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wu-kB-c9J">
-                                <rect key="frame" x="155.66666666666666" y="405.33333333333331" width="81.666666666666657" height="41.666666666666686"/>
-                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="32"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="6XE-d4-J4o">
+                                <rect key="frame" x="46.666666666666657" y="374.33333333333331" width="300" height="103.33333333333331"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="9Dq-DH-tus"/>
+                                    <constraint firstAttribute="height" constant="103.59999999999999" id="n0g-uA-2LN"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vectors" translatesAutoresizingMaskIntoConstraints="NO" id="T6A-LV-ngn">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.65490196078431373" green="0.41176470588235292" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="3wu-kB-c9J" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="7d4-AU-5hO"/>
-                            <constraint firstItem="3wu-kB-c9J" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="aFm-Sp-wAt"/>
+                            <constraint firstItem="T6A-LV-ngn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-59" id="ANd-sA-NqM"/>
+                            <constraint firstItem="T6A-LV-ngn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Bbn-sQ-w8t"/>
+                            <constraint firstItem="T6A-LV-ngn" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="34" id="ByG-Jx-Kzt"/>
+                            <constraint firstItem="6XE-d4-J4o" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="HRc-b7-DeJ"/>
+                            <constraint firstItem="6XE-d4-J4o" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="gFi-Sy-tci"/>
+                            <constraint firstItem="T6A-LV-ngn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ldP-iP-a4K"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Logo" width="300" height="104"/>
+        <image name="vectors" width="390" height="844"/>
+    </resources>
 </document>

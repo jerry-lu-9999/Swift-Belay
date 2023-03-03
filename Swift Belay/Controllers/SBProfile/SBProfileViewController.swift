@@ -9,6 +9,8 @@ import UIKit
 
 import GoogleSignIn
 import FirebaseAuth
+import FacebookLogin
+import FacebookCore
 
 class SBProfileViewController: UIViewController {
     
@@ -19,7 +21,7 @@ class SBProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Accounts page")
-        print(FirebaseAuth.Auth.auth().currentUser ?? "no user")
+        print(FirebaseAuth.Auth.auth().currentUser ?? "no user SBProfileViewController")
         configureUI()
     }
 
@@ -141,43 +143,15 @@ extension SBProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
         print(Auth.auth().currentUser ?? "no Firebase user")
         
-        self.present(SBLoginNavController(), animated: false)
+        let loginManager = LoginManager()
+        if AccessToken.isCurrentAccessTokenActive == true {
+            loginManager.logOut()
+        }
+        
+        let loginVC = SBLoginNavController()
+        let nav     = UINavigationController(rootViewController: loginVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
 }
 
-
-//class SBProfileViewController: UIViewController {
-//
-//    private let signOutButton : UIButton! = {
-//        let signOutButton = UIButton()
-//        signOutButton.setTitle("Sign Out", for: .normal)
-//        return signOutButton
-//    }()
-//
-//
-//    @objc func handleSignOutTouchUpInside(){
-//        let firebaseAuth = Auth.auth()
-//        do {
-//            try firebaseAuth.signOut()
-//            let homeVC = SBLoginNavController()
-//            let nav    = UINavigationController(rootViewController: homeVC)
-//            nav.modalPresentationStyle = .fullScreen
-//            present(nav, animated: true)
-//
-//        } catch let signOutError as NSError {
-//          print("Error signing out: %@", signOutError)
-//        }
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .systemBackground
-//        title = "Profile"
-//
-//        signOutButton.center = view.center
-//        signOutButton.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(signOutButton)
-//        signOutButton.addTarget(self, action: #selector(handleSignOutTouchUpInside), for: .touchUpInside)
-//    }
-//
-//}
