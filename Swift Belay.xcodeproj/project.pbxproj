@@ -38,6 +38,7 @@
 		F5C34A9F29AC721700541B06 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34A9E29AC721700541B06 /* DatabaseManager.swift */; };
 		F5C34AA129AC958E00541B06 /* BelayUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34AA029AC958E00541B06 /* BelayUser.swift */; };
 		F5C34AA529B0199500541B06 /* UDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34AA429B0199500541B06 /* UDM.swift */; };
+		F5C34AA829B1739900541B06 /* SBSetUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C34AA729B1739900541B06 /* SBSetUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		F5C34AA029AC958E00541B06 /* BelayUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BelayUser.swift; sourceTree = "<group>"; };
 		F5C34AA329AEB29200541B06 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F5C34AA429B0199500541B06 /* UDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDM.swift; sourceTree = "<group>"; };
+		F5C34AA729B1739900541B06 /* SBSetUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBSetUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,12 +147,12 @@
 		F56A9A36298DBA6E009C98FF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F56A9A4929922D94009C98FF /* Constants.swift */,
+				F56A9A4B299239C7009C98FF /* SBLoginNavController.swift */,
+				F502ABC5299B61C40050826C /* SBSignUpViewController.swift */,
+				F5C34AA629B1735500541B06 /* SBSetUp */,
 				F5BF1B392988D08E002119A2 /* SBTabBarController.swift */,
 				F56A9A3C298DBBBC009C98FF /* SBHomeViewController.swift */,
 				F56A9A3E298DBBD2009C98FF /* SBChatViewController.swift */,
-				F56A9A4B299239C7009C98FF /* SBLoginNavController.swift */,
-				F502ABC5299B61C40050826C /* SBSignUpViewController.swift */,
 				44AC957129ADB56E00F66ABE /* SBProfile */,
 			);
 			path = Controllers;
@@ -166,6 +168,7 @@
 				F5C34A9E29AC721700541B06 /* DatabaseManager.swift */,
 				F5C34AA029AC958E00541B06 /* BelayUser.swift */,
 				F5C34AA429B0199500541B06 /* UDM.swift */,
+				F56A9A4929922D94009C98FF /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -228,6 +231,14 @@
 				F5BF1B582988D090002119A2 /* Swift_BelayUITestsLaunchTests.swift */,
 			);
 			path = "Swift BelayUITests";
+			sourceTree = "<group>";
+		};
+		F5C34AA629B1735500541B06 /* SBSetUp */ = {
+			isa = PBXGroup;
+			children = (
+				F5C34AA729B1739900541B06 /* SBSetUpViewController.swift */,
+			);
+			path = SBSetUp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -384,6 +395,7 @@
 				44AC957329ADB58600F66ABE /* SBAccountView.swift in Sources */,
 				F5C34A9F29AC721700541B06 /* DatabaseManager.swift in Sources */,
 				F5C34AA129AC958E00541B06 /* BelayUser.swift in Sources */,
+				F5C34AA829B1739900541B06 /* SBSetUpViewController.swift in Sources */,
 				F5BF1B362988D08E002119A2 /* AppDelegate.swift in Sources */,
 				F56A9A3D298DBBBC009C98FF /* SBHomeViewController.swift in Sources */,
 				F56A9A4A29922D94009C98FF /* Constants.swift in Sources */,

@@ -83,7 +83,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
         GIDSignIn.sharedInstance.configuration = config
         
         // Start the sign in flow!
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+        GIDSignIn.sharedInstance.signIn(withPresenting: self, completion:  { [weak self] signInResult, error in
             guard error == nil else {
                 print("Sign in With google failed:\(error.debugDescription)")
                 return
@@ -107,7 +107,7 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
             
-            Auth.auth().signIn(with: credential) { authResult, error in
+            Auth.auth().signIn(with: credential, completion: { authResult, error in
                 guard let result = authResult, error == nil else {
                     print("Google Sign in Error")
                     return 
@@ -117,8 +117,8 @@ class SBLoginNavController: UIViewController, LoginButtonDelegate {
                 print("Logged In User: \(user) via Google")
                 
                 self?.dismiss(animated: true)
-            }
-        }
+            })
+        })
     }
     
     override func viewDidLoad() {

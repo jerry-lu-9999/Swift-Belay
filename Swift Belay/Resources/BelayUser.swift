@@ -12,6 +12,7 @@ struct BelayUser{
     let lastName: String
     let email: String
     
+    /// convert email to safeEmail in order to meet Firebase String requirement
     var safeEmail : String {
         let safeEmail = email.replacingOccurrences(of: ".", with: "-")
                              .replacingOccurrences(of: "@", with: "-")

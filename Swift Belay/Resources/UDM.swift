@@ -7,7 +7,8 @@
 
 import Foundation
 
-/// Singleton to save user's last used email
+/// UserDefault Singleton to save user's last used email
+
 class UDM{
     
     static let shared = UDM()
