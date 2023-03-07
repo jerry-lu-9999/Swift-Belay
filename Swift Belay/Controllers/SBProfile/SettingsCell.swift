@@ -16,6 +16,7 @@ class SettingsCell: UITableViewCell {
             guard let sectionType = sectionType else {return}
             textLabel?.text = sectionType.description
             switchControl.isHidden = !sectionType.containsSwitch
+            switchControl.isOn = sectionType.switchDefault
         }
     }
     
