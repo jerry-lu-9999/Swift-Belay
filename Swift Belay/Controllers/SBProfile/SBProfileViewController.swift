@@ -66,6 +66,7 @@ extension SBProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .Social: return SocialOptions.allCases.count
+        case .ConnectedAccounts: return ConnectedAccountsOptions.allCases.count
         case .Communications: return CommunicationOptions.allCases.count
         }
     }
@@ -99,6 +100,9 @@ extension SBProfileViewController: UITableViewDelegate, UITableViewDataSource {
         case .Social:
             let social = SocialOptions(rawValue: indexPath.row)
             cell.sectionType = social
+        case .ConnectedAccounts:
+            let connectedAccounts = ConnectedAccountsOptions(rawValue: indexPath.row)
+            cell.sectionType = connectedAccounts
         case .Communications:
             let communications = CommunicationOptions(rawValue: indexPath.row)
             cell.sectionType = communications
@@ -119,6 +123,8 @@ extension SBProfileViewController: UITableViewDelegate, UITableViewDataSource {
             case .logout:
                 logout(sender: self)
             }
+        case .ConnectedAccounts:
+            print(CommunicationOptions(rawValue: indexPath.row)?.description ?? "default")
         case .Communications:
             print(CommunicationOptions(rawValue: indexPath.row)?.description ?? "default")
         }

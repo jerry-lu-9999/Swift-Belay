@@ -7,15 +7,18 @@
 
 protocol SectionType: CustomStringConvertible {
     var containsSwitch: Bool { get }
+    var switchDefault: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Social
+    case ConnectedAccounts
     case Communications
     
     var description: String {
         switch self {
         case .Social:         return "Social"
+        case .ConnectedAccounts: return "Connected Accounts"
         case .Communications: return "Communications"
         }
     }
@@ -33,6 +36,29 @@ enum SocialOptions: Int, CaseIterable, SectionType  {
     }
     
     var containsSwitch: Bool {
+        return false
+    }
+    
+    var switchDefault: Bool {
+        return false
+    }
+}
+
+enum ConnectedAccountsOptions: Int, CaseIterable, SectionType {
+    case Facebook
+    case Google
+    var description: String {
+        switch self {
+        case .Facebook: return "Facebook"
+        case .Google:         return "Google"
+        }
+    }
+    
+    var containsSwitch: Bool {
+        return true
+    }
+    
+    var switchDefault: Bool {
         return false
     }
 }
@@ -54,7 +80,11 @@ enum CommunicationOptions: Int, CaseIterable, SectionType {
         switch self {
         case .notifications: return true
         case .email:         return true
-        case .reportCrashes: return false
+        case .reportCrashes: return true
         }
+    }
+    
+    var switchDefault: Bool {
+        return true
     }
 }
